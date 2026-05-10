@@ -35,9 +35,9 @@ type RoastRow = {
   created_at: string;
 };
 
-async function callOpenRouter(userInput: string, retryHint = false): Promise<unknown> {
-  const apiKey = process.env.OPENROUTER_API_KEY;
-  if (!apiKey) throw new Error("Missing OPENROUTER_API_KEY");
+async function callAi(userInput: string, retryHint = false): Promise<unknown> {
+  const apiKey = process.env.LOVABLE_API_KEY;
+  if (!apiKey) throw new Error("Missing LOVABLE_API_KEY");
 
   const messages = [
     { role: "system", content: SYSTEM_PROMPT },
@@ -53,17 +53,14 @@ async function callOpenRouter(userInput: string, retryHint = false): Promise<unk
     { role: "user", content: userInput },
   ];
 
-  const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+  const res = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
     method: "POST",
     headers: {
-      Authorization: `Bearer ${apiKey}`,
+      "Lovable-API-Key": apiKey,
       "Content-Type": "application/json",
-      "HTTP-Referer": "https://reality-slap.lovable.app",
-      "X-Title": "Reality Slap",
     },
     body: JSON.stringify({
-      model: "meta-llama/llama-3.3-70b-instruct:free",
-      temperature: 0.9,
+      model: "google/gemini-3-flash-preview",
       response_format: { type: "json_object" },
       messages,
     }),
@@ -71,7 +68,9 @@ async function callOpenRouter(userInput: string, retryHint = false): Promise<unk
 
   if (!res.ok) {
     const text = await res.text().catch(() => "");
-    throw new Error(`OpenRouter ${res.status}: ${text.slice(0, 200)}`);
+    if (res.status === 429) throw new Error("Rate limit hit. Try again in a moment.");
+    if (res.status === 402) throw new Error("AI credits exhausted. Add credits in Workspace settings.");
+    throw new Error(`AI ${res.status}: ${text.slice(0, 200)}`);
   }
 
   const data = (await res.json()) as {
@@ -96,10 +95,10 @@ export const generateRoast = createServerFn({ method: "POST" })
     // First attempt
     let parsed: unknown;
     try {
-      parsed = await callOpenRouter(userInput, false);
+      parsed = await callAi(userInput, false);
     } catch (e) {
       console.error("[generateRoast] first attempt failed:", e);
-      parsed = await callOpenRouter(userInput, true);
+      parsed = await callAi(userInput, true);
     }
 
     let validated: z.infer<typeof AiSchema>;
@@ -107,7 +106,7 @@ export const generateRoast = createServerFn({ method: "POST" })
       validated = AiSchema.parse(parsed);
     } catch {
       // Retry once with stricter reminder if shape is wrong
-      const second = await callOpenRouter(userInput, true);
+      const second = await callAi(userInput, true);
       validated = AiSchema.parse(second);
     }
 
