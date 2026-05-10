@@ -95,10 +95,10 @@ export const generateRoast = createServerFn({ method: "POST" })
     // First attempt
     let parsed: unknown;
     try {
-      parsed = await callOpenRouter(userInput, false);
+      parsed = await callAi(userInput, false);
     } catch (e) {
       console.error("[generateRoast] first attempt failed:", e);
-      parsed = await callOpenRouter(userInput, true);
+      parsed = await callAi(userInput, true);
     }
 
     let validated: z.infer<typeof AiSchema>;
@@ -106,7 +106,7 @@ export const generateRoast = createServerFn({ method: "POST" })
       validated = AiSchema.parse(parsed);
     } catch {
       // Retry once with stricter reminder if shape is wrong
-      const second = await callOpenRouter(userInput, true);
+      const second = await callAi(userInput, true);
       validated = AiSchema.parse(second);
     }
 
