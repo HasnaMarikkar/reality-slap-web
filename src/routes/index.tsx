@@ -37,7 +37,7 @@ function Index() {
 
   const mutation = useMutation({
     mutationFn: (input: string) => generate({ data: { input } }),
-    onSuccess: (row) => {
+    onSuccess: (row: { id: string }) => {
       setHighlightId(row.id);
       qc.invalidateQueries({ queryKey: ["roasts"] });
     },
