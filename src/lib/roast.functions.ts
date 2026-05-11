@@ -1,6 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
-import { createClient } from "@supabase/supabase-js";
+import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import { attachSupabaseAuth } from "@/integrations/supabase/server-fn-auth";
 
 const InputSchema = z.object({
   input: z
@@ -18,16 +19,17 @@ const AiSchema = z
   })
   .strict();
 
-const SYSTEM_PROMPT = `You are "Reality Slap" — a witty, sharp-tongued life coach.
+const SYSTEM_PROMPT = `You are "Reality Slap" — a witty, sarcastic but supportive friend.
 Given a user's habit, excuse, problem, or situation, return ONLY a valid minified JSON object with EXACTLY these three keys:
-- "roast": 1-2 sentences. Witty, sharp, playful. Never cruel about protected traits (race, gender, disability, religion, sexuality). Punchy.
-- "reality_check": 2-3 sentences. Brutally honest, factual, no sugar-coating. Address what is actually happening.
-- "advice": 2-4 sentences. Concrete, actionable next steps the user can do this week.
-If the input mentions self-harm, suicide, or crisis: skip the roast tone — set "roast" to a kind acknowledgement, give a compassionate "reality_check", and in "advice" gently suggest contacting a local crisis helpline or trusted person.
+- "roast": 1-2 sentences. Playful sarcasm, teen-friendly. NEVER cruel, hateful, NSFW, or about protected traits.
+- "reality_check": 2-3 sentences. Honest and grounded — call out the pattern without bullying.
+- "advice": 2-4 sentences. Concrete, actionable next steps for this week.
+If the input mentions self-harm, suicide, or crisis: drop the roast tone — set "roast" to a kind acknowledgement, give a compassionate "reality_check", and in "advice" gently suggest contacting a local crisis helpline or trusted person.
 Reply with the JSON object ONLY. No prose, no markdown, no code fences.`;
 
 type RoastRow = {
   id: string;
+  user_id: string;
   user_input: string;
   roast: string;
   reality_check: string;
@@ -80,7 +82,6 @@ async function callAi(userInput: string, retryHint = false): Promise<unknown> {
   try {
     return JSON.parse(content);
   } catch {
-    // Try to extract a JSON object substring as a fallback
     const match = content.match(/\{[\s\S]*\}/);
     if (match) return JSON.parse(match[0]);
     throw new Error("AI returned non-JSON output");
@@ -88,11 +89,12 @@ async function callAi(userInput: string, retryHint = false): Promise<unknown> {
 }
 
 export const generateRoast = createServerFn({ method: "POST" })
+  .middleware([attachSupabaseAuth, requireSupabaseAuth])
   .inputValidator((data: unknown) => InputSchema.parse(data))
-  .handler(async ({ data }) => {
+  .handler(async ({ data, context }) => {
     const userInput = data.input;
+    const { supabase, userId } = context;
 
-    // First attempt
     let parsed: unknown;
     try {
       parsed = await callAi(userInput, false);
@@ -105,20 +107,14 @@ export const generateRoast = createServerFn({ method: "POST" })
     try {
       validated = AiSchema.parse(parsed);
     } catch {
-      // Retry once with stricter reminder if shape is wrong
       const second = await callAi(userInput, true);
       validated = AiSchema.parse(second);
     }
 
-    const supabase = createClient(
-      process.env.SUPABASE_URL!,
-      process.env.SUPABASE_SERVICE_ROLE_KEY ?? process.env.SUPABASE_PUBLISHABLE_KEY!,
-      { auth: { persistSession: false, autoRefreshToken: false } }
-    );
-
     const { data: row, error } = await supabase
       .from("roasts")
       .insert({
+        user_id: userId,
         user_input: userInput,
         roast: validated.roast,
         reality_check: validated.reality_check,

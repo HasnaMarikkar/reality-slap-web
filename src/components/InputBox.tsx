@@ -25,27 +25,27 @@ export function InputBox({ onSubmit, isLoading }: InputBoxProps) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="rounded-3xl border border-border bg-card/70 backdrop-blur-md p-5 shadow-[var(--shadow-glow)]"
+      className="rounded-3xl bg-card p-5 shadow-clay space-y-3"
     >
       <Textarea
         value={value}
         onChange={(e) => setValue(e.target.value.slice(0, MAX))}
-        placeholder="Drop a habit, excuse, or life situation… and prepare to be slapped."
+        placeholder="Drop a habit, excuse, or life situation…"
         rows={3}
-        className="resize-none border-0 bg-transparent text-base focus-visible:ring-0 focus-visible:ring-offset-0 px-0"
+        className="resize-none border-0 bg-transparent text-base focus-visible:ring-0 focus-visible:ring-offset-0 px-1 placeholder:text-muted-foreground/70"
         disabled={isLoading}
       />
-      <div className="flex items-center justify-between gap-3 pt-3 border-t border-border">
-        <span className="text-xs text-muted-foreground tabular-nums">
+      <div className="flex items-center justify-between gap-3">
+        <span className="text-xs font-semibold text-muted-foreground tabular-nums pl-1">
           {trimmed.length}/{MAX}
         </span>
         <Button
           type="submit"
           disabled={!canSubmit}
-          className="bg-gradient-brand text-primary-foreground font-semibold hover:opacity-90 hover:scale-[1.02] transition-all shadow-[var(--shadow-glow)] disabled:opacity-50 disabled:scale-100"
+          className="h-12 px-6 rounded-2xl bg-gradient-brand text-accent-foreground font-bold text-base shadow-clay hover:scale-[1.03] active:scale-[0.98] transition-transform disabled:opacity-60 disabled:scale-100 disabled:hover:scale-100"
         >
           <Flame className="mr-1.5 h-4 w-4" />
-          {isLoading ? "Cooking…" : "Slap Me"}
+          {isLoading ? "Slapping…" : "Slap Me With Reality"}
         </Button>
       </div>
     </form>

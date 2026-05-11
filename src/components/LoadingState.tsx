@@ -1,16 +1,37 @@
-import { Skeleton } from "@/components/ui/skeleton";
+import { useEffect, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { EmojiAnimation } from "./EmojiAnimation";
+
+const MESSAGES = [
+  "Preparing emotional damage…",
+  "Consulting the sarcastic department…",
+  "Analyzing your life choices…",
+  "Warming up the truth cannon…",
+  "Locating the nearest reality…",
+];
 
 export function LoadingState() {
+  const [idx, setIdx] = useState(0);
+  useEffect(() => {
+    const t = setInterval(() => setIdx((i) => (i + 1) % MESSAGES.length), 1800);
+    return () => clearInterval(t);
+  }, []);
+
   return (
-    <div className="rounded-3xl border border-border bg-card/70 backdrop-blur-md p-6 space-y-5 animate-pulse">
-      <p className="text-sm text-muted-foreground">Cooking your roast…</p>
-      {["roast", "reality", "advice"].map((k) => (
-        <div key={k} className="space-y-2">
-          <Skeleton className="h-4 w-24" />
-          <Skeleton className="h-4 w-full" />
-          <Skeleton className="h-4 w-3/4" />
-        </div>
-      ))}
+    <div className="rounded-3xl bg-card p-8 shadow-clay text-center space-y-4">
+      <EmojiAnimation />
+      <AnimatePresence mode="wait">
+        <motion.p
+          key={idx}
+          initial={{ opacity: 0, y: 6 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -6 }}
+          transition={{ duration: 0.3 }}
+          className="text-sm font-medium text-muted-foreground"
+        >
+          {MESSAGES[idx]}
+        </motion.p>
+      </AnimatePresence>
     </div>
   );
 }
