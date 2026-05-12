@@ -31,9 +31,10 @@ export function HistoryList({ highlightId }: HistoryListProps) {
   }
 
   if (error) {
+    console.error("[HistoryList] load failed:", error);
     return (
       <p className="text-sm text-destructive">
-        Could not load history: {(error as Error).message}
+        Could not load history. Please try again.
       </p>
     );
   }
