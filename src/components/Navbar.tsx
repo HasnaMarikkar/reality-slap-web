@@ -38,7 +38,7 @@ export function Navbar() {
       <div className="mx-auto max-w-2xl flex items-center justify-between gap-3 px-4 py-4">
         <div className="flex items-center gap-2.5">
           <div className="h-10 w-10 rounded-2xl bg-gradient-brand shadow-clay-sm flex items-center justify-center text-lg">
-            🤡
+            ⚔️
           </div>
           <span className="font-display text-xl text-foreground">Reality Slap</span>
         </div>
