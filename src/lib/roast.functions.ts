@@ -62,8 +62,7 @@ async function callAi(userInput: string, retryHint = false): Promise<unknown> {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      model: "google/gemini-3-flash-preview",
-      response_format: { type: "json_object" },
+      model: "google/gemini-2.5-flash",
       messages,
     }),
   });
