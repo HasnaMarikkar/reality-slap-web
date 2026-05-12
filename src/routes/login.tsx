@@ -1,4 +1,5 @@
-import { createFileRoute, redirect } from "@tanstack/react-router";
+import { useEffect } from "react";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Toaster } from "sonner";
 import { AuthForm } from "@/components/AuthForm";
 import { supabase } from "@/integrations/supabase/client";
@@ -14,6 +15,12 @@ export const Route = createFileRoute("/login")({
 });
 
 function LoginPage() {
+  const navigate = useNavigate();
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => {
+      if (data.session) navigate({ to: "/" });
+    });
+  }, [navigate]);
   return (
     <main className="min-h-screen flex items-center justify-center px-4 py-12">
       <Toaster position="top-center" richColors />
