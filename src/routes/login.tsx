@@ -4,11 +4,6 @@ import { AuthForm } from "@/components/AuthForm";
 import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/login")({
-  beforeLoad: async () => {
-    if (typeof window === "undefined") return;
-    const { data } = await supabase.auth.getSession();
-    if (data.session) throw redirect({ to: "/" });
-  },
   head: () => ({
     meta: [
       { title: "Sign in — Reality Slap" },
