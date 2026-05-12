@@ -70,9 +70,10 @@ async function callAi(userInput: string, retryHint = false): Promise<unknown> {
 
   if (!res.ok) {
     const text = await res.text().catch(() => "");
-    if (res.status === 429) throw new Error("Rate limit hit. Try again in a moment.");
-    if (res.status === 402) throw new Error("AI credits exhausted. Add credits in Workspace settings.");
-    throw new Error(`AI ${res.status}: ${text.slice(0, 200)}`);
+    console.error(`[callAi] AI gateway error ${res.status}:`, text);
+    if (res.status === 429) throw new Error("Too many requests. Please try again in a moment.");
+    if (res.status === 402) throw new Error("Service temporarily unavailable.");
+    throw new Error("AI service error. Please try again.");
   }
 
   const data = (await res.json()) as {
