@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { toast } from "sonner";
-import { LogOut } from "lucide-react";
+import { LogIn, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -13,17 +13,18 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { supabase } from "@/integrations/supabase/client";
 
-export function Navbar() {
+export function Navbar({ guest = false }: { guest?: boolean }) {
   const navigate = useNavigate();
   const [email, setEmail] = useState<string | null>(null);
 
   useEffect(() => {
+    if (guest) return;
     supabase.auth.getUser().then(({ data }) => setEmail(data.user?.email ?? null));
     const { data: sub } = supabase.auth.onAuthStateChange((_e, session) => {
       setEmail(session?.user?.email ?? null);
     });
     return () => sub.subscription.unsubscribe();
-  }, []);
+  }, [guest]);
 
   const logout = async () => {
     await supabase.auth.signOut();
@@ -42,7 +43,18 @@ export function Navbar() {
           </div>
           <span className="font-display text-xl text-foreground">Reality Slap</span>
         </div>
-        {email && (
+        {guest && (
+          <Button
+            asChild
+            className="h-10 px-4 rounded-2xl bg-gradient-brand text-accent-foreground font-bold shadow-clay-sm hover:scale-105 transition-transform"
+          >
+            <Link to="/login">
+              <LogIn className="mr-1.5 h-4 w-4" />
+              Sign in
+            </Link>
+          </Button>
+        )}
+        {!guest && email && (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button

@@ -88,6 +88,35 @@ async function callAi(userInput: string, retryHint = false): Promise<unknown> {
   }
 }
 
+// Guest version: no auth, no DB persistence — returns ephemeral roast only.
+export const generateRoastGuest = createServerFn({ method: "POST" })
+  .inputValidator((data: unknown) => InputSchema.parse(data))
+  .handler(async ({ data }) => {
+    const userInput = data.input;
+    let parsed: unknown;
+    try {
+      parsed = await callAi(userInput, false);
+    } catch (e) {
+      console.error("[generateRoastGuest] first attempt failed:", e);
+      parsed = await callAi(userInput, true);
+    }
+    let validated: z.infer<typeof AiSchema>;
+    try {
+      validated = AiSchema.parse(parsed);
+    } catch {
+      const second = await callAi(userInput, true);
+      validated = AiSchema.parse(second);
+    }
+    return {
+      id: `guest-${crypto.randomUUID()}`,
+      user_input: userInput,
+      roast: validated.roast,
+      reality_check: validated.reality_check,
+      advice: validated.advice,
+      created_at: new Date().toISOString(),
+    };
+  });
+
 export const generateRoast = createServerFn({ method: "POST" })
   .middleware([attachSupabaseAuth, requireSupabaseAuth])
   .inputValidator((data: unknown) => InputSchema.parse(data))
