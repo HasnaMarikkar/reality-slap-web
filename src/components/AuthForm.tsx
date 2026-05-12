@@ -95,6 +95,18 @@ export function AuthForm() {
           </TabsContent>
         </Tabs>
       </div>
+
+      <div className="text-center mt-5">
+        <Link
+          to="/guest"
+          className="text-sm font-semibold text-accent hover:underline underline-offset-4"
+        >
+          Try Without Signing In →
+        </Link>
+        <p className="text-xs text-muted-foreground mt-1">
+          Guest roasts are temporary and won't be saved.
+        </p>
+      </div>
     </div>
   );
 }
