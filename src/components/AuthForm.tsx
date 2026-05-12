@@ -44,7 +44,7 @@ export function AuthForm() {
     <div className="w-full max-w-md mx-auto">
       <div className="text-center mb-8 space-y-2">
         <div className="inline-flex items-center justify-center h-16 w-16 rounded-3xl bg-gradient-brand shadow-clay text-3xl">
-          🤡
+          ⚔️
         </div>
         <h1 className="text-4xl font-display text-foreground">Reality Slap</h1>
         <p className="text-muted-foreground">Sign in to get slapped with reality.</p>

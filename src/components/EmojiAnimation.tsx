@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 
-const EMOJIS = ["😭", "🙃", "🤡", "💀", "😔"];
+const EMOJIS = ["😭", "🙃", "💀", "😔"];
 
 export function EmojiAnimation() {
   return (
