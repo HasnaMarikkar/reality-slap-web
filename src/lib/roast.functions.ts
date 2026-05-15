@@ -38,8 +38,8 @@ type RoastRow = {
 };
 
 async function callAi(userInput: string, retryHint = false): Promise<unknown> {
-  const apiKey = process.env.LOVABLE_API_KEY;
-  if (!apiKey) throw new Error("Missing LOVABLE_API_KEY");
+  const apiKey = process.env.OPENROUTER_API_KEY;
+  if (!apiKey) throw new Error("Missing OPENROUTER_API_KEY");
 
   const messages = [
     { role: "system", content: SYSTEM_PROMPT },
@@ -55,11 +55,13 @@ async function callAi(userInput: string, retryHint = false): Promise<unknown> {
     { role: "user", content: userInput },
   ];
 
-  const res = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+  const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
     method: "POST",
     headers: {
-      "Lovable-API-Key": apiKey,
+      Authorization: `Bearer ${apiKey}`,
       "Content-Type": "application/json",
+      "HTTP-Referer": "https://reality-slap.lovable.app",
+      "X-Title": "Reality Slap",
     },
     body: JSON.stringify({
       model: "google/gemini-2.5-flash",
