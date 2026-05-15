@@ -66,6 +66,7 @@ async function callAi(userInput: string, retryHint = false): Promise<unknown> {
     body: JSON.stringify({
       model: "google/gemini-2.5-flash",
       messages,
+      max_tokens: 1000,
     }),
   });
 
