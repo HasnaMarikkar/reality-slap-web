@@ -171,3 +171,34 @@
 @utility shadow-clay-inset {
   box-shadow: var(--shadow-clay-inset);
 }
+
+@utility shadow-clay-3d {
+  box-shadow: var(--shadow-clay-3d);
+}
+
+@utility shadow-clay-float {
+  box-shadow: var(--shadow-clay-float);
+}
+
+@utility animate-clay-float {
+  animation: clay-float 6s ease-in-out infinite;
+}
+
+@utility animate-clay-glow {
+  animation: clay-pulse-glow 5s ease-in-out infinite;
+}
+
+@utility text-gradient-animated {
+  background: linear-gradient(
+    90deg,
+    var(--primary),
+    var(--accent),
+    oklch(0.78 0.18 30),
+    var(--primary)
+  );
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: headline-shimmer 6s linear infinite;
+}
