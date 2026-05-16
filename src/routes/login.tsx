@@ -23,7 +23,8 @@ function LoginPage() {
     });
   }, [navigate]);
   return (
-    <main className="min-h-screen flex items-center justify-center px-4 py-12">
+    <main className="min-h-screen flex items-center justify-center px-4 py-12 relative overflow-hidden">
+      <WavyBackground />
       <Toaster position="top-center" richColors />
       <AuthForm />
     </main>
