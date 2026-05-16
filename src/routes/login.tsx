@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Toaster } from "sonner";
 import { AuthForm } from "@/components/AuthForm";
+import { WavyBackground } from "@/components/WavyBackground";
 import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/login")({
