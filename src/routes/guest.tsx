@@ -9,6 +9,7 @@ import { LoadingState } from "@/components/LoadingState";
 import { ErrorState } from "@/components/ErrorState";
 import { EmptyState } from "@/components/EmptyState";
 import { RoastCard } from "@/components/RoastCard";
+import { HeroHeader } from "@/components/HeroHeader";
 import { generateRoastGuest } from "@/lib/roast.functions";
 import type { Roast } from "@/lib/roasts-api";
 import { Info } from "lucide-react";
@@ -52,14 +53,7 @@ function GuestPage() {
       <Navbar guest />
       <main className="px-4 pb-16">
         <div className="mx-auto w-full max-w-2xl space-y-8">
-          <header className="text-center space-y-2 pt-4">
-            <h1 className="text-4xl sm:text-5xl font-display text-foreground leading-[1.05]">
-              Get slapped <span className="text-gradient">with reality</span>.
-            </h1>
-            <p className="text-muted-foreground text-base max-w-md mx-auto">
-              Roast. Reality check. Real advice. All in one slap.
-            </p>
-          </header>
+          <HeroHeader eyebrow="Guest mode · session-only" />
 
           <div className="rounded-2xl bg-card shadow-clay-sm p-3 flex items-center gap-2.5 text-sm text-foreground/80">
             <Info className="h-4 w-4 text-accent shrink-0" />

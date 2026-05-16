@@ -25,8 +25,20 @@ export function InputBox({ onSubmit, isLoading }: InputBoxProps) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="rounded-3xl bg-card p-5 shadow-clay space-y-3"
+      className="relative rounded-[2rem] bg-card p-6 shadow-clay-3d space-y-3 transition-shadow"
     >
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -inset-px rounded-[2rem] opacity-60"
+        style={{
+          background:
+            "linear-gradient(135deg, color-mix(in oklab, var(--primary) 35%, transparent), transparent 50%, color-mix(in oklab, var(--accent) 25%, transparent))",
+          WebkitMask: "linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)",
+          WebkitMaskComposite: "xor",
+          maskComposite: "exclude",
+          padding: "1px",
+        }}
+      />
       <Textarea
         value={value}
         onChange={(e) => setValue(e.target.value.slice(0, MAX))}
@@ -42,7 +54,7 @@ export function InputBox({ onSubmit, isLoading }: InputBoxProps) {
         <Button
           type="submit"
           disabled={!canSubmit}
-          className="h-12 px-6 rounded-2xl bg-gradient-brand text-accent-foreground font-bold text-base shadow-clay hover:scale-[1.03] active:scale-[0.98] transition-transform disabled:opacity-60 disabled:scale-100 disabled:hover:scale-100"
+          className="h-12 px-6 rounded-2xl bg-gradient-brand text-accent-foreground font-bold text-base shadow-clay-float hover:scale-[1.04] hover:-translate-y-0.5 active:scale-[0.97] active:translate-y-0 transition-all duration-200 disabled:opacity-60 disabled:scale-100 disabled:hover:scale-100 disabled:hover:translate-y-0"
         >
           <Flame className="mr-1.5 h-4 w-4" />
           {isLoading ? "Slapping…" : "Slap Me With Reality"}

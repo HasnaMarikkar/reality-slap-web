@@ -8,6 +8,7 @@ import { InputBox } from "@/components/InputBox";
 import { LoadingState } from "@/components/LoadingState";
 import { ErrorState } from "@/components/ErrorState";
 import { HistoryList } from "@/components/HistoryList";
+import { HeroHeader } from "@/components/HeroHeader";
 import { generateRoast } from "@/lib/roast.functions";
 
 export const Route = createFileRoute("/_authenticated/")({
@@ -57,14 +58,7 @@ function Index() {
       <Navbar />
       <main className="px-4 pb-16">
         <div className="mx-auto w-full max-w-2xl space-y-8">
-          <header className="text-center space-y-2 pt-4">
-            <h1 className="text-4xl sm:text-5xl font-display text-foreground leading-[1.05]">
-              Get slapped <span className="text-gradient">with reality</span>.
-            </h1>
-            <p className="text-muted-foreground text-base max-w-md mx-auto">
-              Roast. Reality check. Real advice. All in one slap.
-            </p>
-          </header>
+          <HeroHeader />
 
           <InputBox onSubmit={handleSubmit} isLoading={mutation.isPending} />
 
