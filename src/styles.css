@@ -221,6 +221,12 @@
 @utility animate-orb-float-reverse {
   animation: orb-float-reverse 14s ease-in-out infinite;
 }
+@keyframes headline-shimmer {
+  0%   { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+
+@utility text-gradient-animated {
   background: linear-gradient(
     90deg,
     var(--primary),
