@@ -1,18 +1,18 @@
 export function WavyBackground() {
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
-      {/* ====== TOP WAVES (move right, crests point down) ====== */}
+      {/* ====== TOP WAVES (curve at top edge, fill downward, drift right) ====== */}
       {/* Top wave layer 1 — slowest, back */}
       <svg
         className="absolute top-0 left-0 w-[200%] animate-wave-slow-reverse"
         viewBox="0 0 1440 320"
         preserveAspectRatio="none"
         aria-hidden="true"
-        style={{ height: "35%", transform: "scaleY(-1)" }}
+        style={{ height: "35%" }}
       >
         <path
           fill={"color-mix(in oklab, oklch(0.72 0.20 50) 12%, transparent)"}
-          d="M0,192L48,197C96,203,192,213,288,229C384,245,480,267,576,250C672,233,768,179,864,181C960,183,1056,245,1152,261C1248,277,1344,245,1392,229L1440,213L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
+          d="M0,40 C160,90 320,10 480,55 C640,100 800,20 960,60 C1120,100 1280,30 1440,70 L1440,0 L0,0 Z M0,40 C160,90 320,10 480,55 C640,100 800,20 960,60 C1120,100 1280,30 1440,70 L1440,320 L0,320 Z"
         />
       </svg>
 
@@ -22,11 +22,11 @@ export function WavyBackground() {
         viewBox="0 0 1440 320"
         preserveAspectRatio="none"
         aria-hidden="true"
-        style={{ height: "28%", transform: "scaleY(-1)" }}
+        style={{ height: "28%" }}
       >
         <path
           fill={"color-mix(in oklab, oklch(0.85 0.17 90) 18%, transparent)"}
-          d="M0,96L48,112C96,128,192,160,288,186C384,213,480,235,576,224C672,213,768,171,864,165C960,160,1056,192,1152,208C1248,224,1344,224,1392,224L1440,224L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
+          d="M0,70 C180,20 360,110 540,60 C720,10 900,100 1080,55 C1260,15 1380,80 1440,50 L1440,320 L0,320 Z"
         />
       </svg>
 
@@ -36,15 +36,14 @@ export function WavyBackground() {
         viewBox="0 0 1440 320"
         preserveAspectRatio="none"
         aria-hidden="true"
-        style={{ height: "22%", transform: "scaleY(-1)" }}
+        style={{ height: "22%" }}
       >
         <path
           fill={"color-mix(in oklab, oklch(0.93 0.05 60) 28%, transparent)"}
-          d="M0,64L48,80C96,96,192,128,288,133C384,139,480,117,576,128C672,139,768,181,864,192C960,203,1056,181,1152,165C1248,149,1344,139,1392,133L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
+          d="M0,30 C200,80 400,5 600,45 C800,85 1000,15 1200,50 C1320,70 1400,40 1440,35 L1440,320 L0,320 Z"
         />
       </svg>
 
-      {/* ====== BOTTOM WAVES (move left) ====== */}
       {/* Wave layer 1 — slowest, back */}
       <svg
         className="absolute bottom-0 left-0 w-[200%] animate-wave-slow"
